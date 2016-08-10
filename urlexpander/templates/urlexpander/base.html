@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>URL Expander</title>
+	<link rel="icon" type="image/png" href="{% static 'img/tree.png' %}">
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<script src="https://use.fontawesome.com/6d01efcfaa.js"></script>
+	<!-- Custom Styles -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+	<header class="header container" role="header">
+		<a href="{% url 'url_list' %}" class="page-title"><h1>URL Expander</h1></a>
+	</header>
+	<main role="main" class="container">
+		{% block content %}
+		{% endblock %}
+	</main>
+</body>
+
+</html>

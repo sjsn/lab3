@@ -1,0 +1,50 @@
+.delete a {
+	color: red;
+	text-decoration: none;
+}
+
+h1 {
+	font-weight: bold;
+}
+
+a h1 {
+	color: black;
+	text-decoration: none;
+}
+
+page-title:hover {
+	text-decoration: none;
+}
+
+.header {
+	margin-bottom: 20px;
+}
+
+.search-input {
+	margin: auto;
+}
+
+header {
+	text-align: center;
+}
+
+.logout-btn {
+	float: right;
+}
+
+.error {
+	color: red;
+}
+
+.login-holder {
+	text-align: center;
+}
+
+.login-form {
+	display: inline-block;
+	margin: auto;
+}
+
+.login-btn {
+	margin-top: 30px;
+}

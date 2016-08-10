@@ -1,0 +1,41 @@
+{% extends 'urlexpander/base.html' %}
+
+{% block content %}
+
+	<section role="section">
+		<div class="authentication">
+			<a href="./accounts/logout/" class="btn btn-default logout-btn">Logout</a>
+		</div>
+	</section>
+
+	<section class="search">
+		<form method="POST" class="form-group">
+			{% csrf_token %}
+			<div class="input-group search-input">
+				{{form}}
+				<button type="submit" class="btn btn-primary" aria-label="search button"><i class="glyphicon glyphicon-search"></i></button>
+			</div>
+		</form>
+	</section>
+
+	{% if msg is not None %}
+	<section class="error-msg">
+		<p>{{msg}}</p>
+	</section>
+	{% endif %}
+
+	<section class="url-list">
+		<h2>Previous URLs</h2>
+		<table class="table table-striped col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<thead>
+				<tr><th>Date:</th><th>URL:</th><th></th></tr>
+			</thead>
+			<tbody>
+				{% for url in urls %}
+					<tr><td>{{url.date}}</td><td><a href="{% url 'url_detail' pk=url.pk %}">{{url.url}}</a></td><td class="delete"><a href="delete/{{url.pk }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</section>
+	
+{% endblock %}

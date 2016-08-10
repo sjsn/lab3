@@ -1,0 +1,7 @@
+settings.py
+
+labvenv/
+
+.DS_STORE
+
+*.pyc
