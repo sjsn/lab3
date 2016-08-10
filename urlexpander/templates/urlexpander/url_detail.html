@@ -17,6 +17,13 @@
 			<p>Webpage Title: {{url.title}}</p>
 			<p>Webpage Status: {{url.status}}</p>
 			<p>Request Date: {{url.date}}</p>
+			<p>Wayback Response: 
+				{% if url.wayback == "Not available" %}
+					{{url.wayback}}</p>
+				{% else %}
+					<a href="{{url.wayback}}">{{url.wayback}}</a></p>
+				{% endif %}
+			<p>Wayback Date: {{url.wayback_date}}</p>			
 		</div>
 		<div class="delete-btn">
 			<a class="btn btn-danger" href="../../delete/{{url.pk}}">Delete</a>

@@ -7,6 +7,8 @@ class URL(models.Model):
 	status = models.CharField(max_length = 100, default = '200')
 	final_url = models.CharField(max_length = 250, null = url)
 	title = models.CharField(max_length = 250, null = True)
+	wayback = models.CharField(max_length = 250, null = url)
+	wayback_date = models.CharField(max_length = 30, null = True)
 
 	def __str__(self):
 		return self.url

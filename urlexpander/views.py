@@ -6,6 +6,8 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+import datetime
+from memento_client import MementoClient
 import requests
 from bs4 import BeautifulSoup
 from .models import URL
@@ -30,11 +32,18 @@ def url_list(request):
 				new_url.status = response.status_code
 				new_url.final_url = response.url
 				new_url.title = title
+				current_date = datetime.datetime.now()
+				memento = MementoClient()
+				wayback_res = memento.get_memento_info(response.url, current_date).get("mementos").get("closest")
+				new_url.wayback = wayback_res.get("uri")[0]
+				new_url.wayback_date = str(wayback_res.get("datetime"))
 			# Sets up error message
 			except Exception as e:
 				new_url.status = "None"
 				new_url.final_url = "Does not exist"
 				new_url.title = "This webpage does not exist"
+				new_url.wayback = "Not available"
+				new_url.wayback_date = "Not available"
 				pass
 			# Redirects to details page
 			finally:
