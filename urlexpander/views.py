@@ -14,7 +14,7 @@ from .models import URL
 from .forms import SearchForm
 
 # Creates URL table and handles new URL creation
-@login_required(login_url="/accounts/login/")
+@login_required(login_url="accounts/login/")
 def url_list(request):
 	if request.method == "POST":
 		form = SearchForm(request.POST)
@@ -55,18 +55,19 @@ def url_list(request):
 	return render(request, 'urlexpander/url_list.html', {'urls': urls, 'form': SearchForm})
 
 # Sends information for the "Detail" page
-@login_required(login_url="/accounts/login/")
+@login_required(login_url="accounts/login/")
 def url_detail(request, pk):
 	url = get_object_or_404(URL, pk = pk)
 	return render(request, 'urlexpander/url_detail.html', {'url': url})
 
 # Handles the deletion of a URL from the list
-@login_required(login_url="/accounts/login/")
+@login_required(login_url="accounts/login/")
 def delete_url(request, pk):
 	url = get_object_or_404(URL, pk = pk)
 	url.delete()
 	return	HttpResponseRedirect('../')
 
+# Handles logging a user out
 def logout_url(request):
 	logout(request)
 	return redirect('login')

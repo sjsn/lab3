@@ -18,7 +18,7 @@
 			<p>Webpage Status: {{url.status}}</p>
 			<p>Request Date: {{url.date}}</p>
 			<p>Wayback Response: 
-				{% if url.wayback == "Not available" %}
+				{% if url.wayback == "Not available" or url.wayback == "None"%}
 					{{url.wayback}}</p>
 				{% else %}
 					<a href="{{url.wayback}}">{{url.wayback}}</a></p>
