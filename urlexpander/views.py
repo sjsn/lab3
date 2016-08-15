@@ -23,7 +23,6 @@ from urlexpander.models import URL
 from urlexpander.serializers import URLSerializer
 
 # For phahtomjs cloud
-api_key = "ak-53wg4-aq5mb-cahrf-t8s7s-ymzkq"
 
 # Creates URL table and handles new URL creation
 @ratelimit(key="ip", rate="10/m", block=True)
