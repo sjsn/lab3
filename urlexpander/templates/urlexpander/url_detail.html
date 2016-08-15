@@ -18,12 +18,19 @@
 			<p>Webpage Status: {{url.status}}</p>
 			<p>Request Date: {{url.date}}</p>
 			<p>Wayback Response: 
-				{% if url.wayback == "Not available" or url.wayback == "None"%}
+				{% if url.wayback == "Not available" or url.wayback == "None" %}
 					{{url.wayback}}</p>
 				{% else %}
 					<a href="{{url.wayback}}">{{url.wayback}}</a></p>
 				{% endif %}
-			<p>Wayback Date: {{url.wayback_date}}</p>			
+			<p>Wayback Date: {{url.wayback_date}}</p>
+			<p>Archived Image: 
+			{% if url.archive_link == "Not available" or url.archive_link == "None" %}
+				{{url.archive_link}}</p>
+			{% else %}
+			</p>
+			<a href="{{url.archive_link}}"><img src="{{url.archive_link}}" alt="Archive Image" class="archive-img" /></a>
+			{% endif %}
 		</div>
 		<div class="delete-btn">
 			<a class="btn btn-danger" href="../../delete/{{url.pk}}">Delete</a>

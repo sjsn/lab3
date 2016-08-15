@@ -7,5 +7,4 @@ urlpatterns = [
 	url(r'^delete/(?P<pk>\d+)$', views.delete_url, ),
 	url(r'^accounts/login/$', views.auth_views.login, name = "login"),
 	url(r'^accounts/logout/$', views.logout_url, name = "logout"),
-
 ]

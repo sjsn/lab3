@@ -5,3 +5,5 @@ labvenv/
 .DS_STORE
 
 *.pyc
+
+.aws/
