@@ -126,8 +126,9 @@ API Logic
 """
 
 # GET a list of all current URLs or POST a new URL
-@api_view(['GET', 'POST'])
+@ratelimit(key="ip", rate="10/m", block=True)
 @login_required(login_url="/lab3/accounts/login/")
+@api_view(['GET', 'POST'])
 def list_urls(request, format=None):
 	if request.method == 'GET':
 		urls = URL.objects.all()
@@ -142,8 +143,9 @@ def list_urls(request, format=None):
 		return Response(status = status.HTTP_400_BAD_REQUEST)
 
 # GET a specific URL or DELETE a specific URL
-@api_view(['GET', 'DELETE'])
+@ratelimit(key="ip", rate="10/m", block=True)
 @login_required(login_url="/lab3/accounts/login/")
+@api_view(['GET', 'DELETE'])
 def detail_url(request, pk, format=None):
 	try:
 		url = URL.objects.get(pk = pk)
