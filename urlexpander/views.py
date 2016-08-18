@@ -23,6 +23,7 @@ from urlexpander.models import URL
 from urlexpander.serializers import URLSerializer
 
 # For phahtomjs cloud
+api_key = "ak-53wg4-aq5mb-cahrf-t8s7s-ymzkq"
 
 # Creates URL table and handles new URL creation
 @ratelimit(key="ip", rate="10/m", block=True)
@@ -64,9 +65,9 @@ def url_list(request):
 				res = urllibreq.urlopen(req)
 				result = res.read()
 				# Puts the generated image on S3
-				s3_connection.Bucket("lab3pics").put_object(Key=str(current_date) + ".jpg", Body=result, ACL="public-read", ContentType="image/jpeg")
+				s3_connection.Bucket("lab3pics").put_object(Key=str(new_url.wayback_date) + ".jpg", Body=result, ACL="public-read", ContentType="image/jpeg")
 				# Generates a publicly accessible link to the image
-				pic_url = "http://s3.amazonaws.com/lab3pics/" + str(current_date) + ".jpg"
+				pic_url = "http://s3.amazonaws.com/lab3pics/" + str(new_url.wayback_date) + ".jpg"
 				new_url.archive_link = pic_url
 			# Sets up error message
 			except Exception as e:
@@ -75,7 +76,7 @@ def url_list(request):
 				new_url.title = "This webpage does not exist"
 				new_url.wayback = "Not available"
 				new_url.wayback_date = "Not available"
-				new_url.archive_link = e
+				new_url.archive_link = "Not available"
 				# Redirects to details page
 			finally:
 				new_url.save()
@@ -97,21 +98,17 @@ def url_detail(request, pk):
 @login_required(login_url="/lab3/accounts/login/")
 def delete_url(request, pk):
 	url = get_object_or_404(URL, pk = pk)
-	url_key = url.archive_link
+	url_key = str(url.wayback_date) + ".jpg"
 	# Connection to S3 Bucket for pic storage	
-	boto3.session.Session(aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY)
 	s3_connection = boto3.client("s3")
 	# Check to see if the img exists in the bucket
-	exists = False
 	try:
 		s3_connection.get_object(Bucket="lab3pics", Key=url_key)
+		exists = True
 	except:
 		exists = False
-	finally:
-		if exists is not False:
-			exists = True
 	# If the img exists within the bucket, delete it from S3
-	if exists is True:
+	if exists == True:
 		s3_connection.delete_object(Bucket="lab3pics", Key=url_key)
 	# Remove the URL data from the database
 	url.delete()
@@ -122,18 +119,21 @@ def logout_url(request):
 	logout(request)
 	return redirect('login')
 
-# API Logic
+""" 
+
+API Logic
+
+"""
 
 # GET a list of all current URLs or POST a new URL
-@api_view(["GET", "POST"])
-@ratelimit(key="ip", rate="10/m", block=True)
+@api_view(['GET', 'POST'])
 @login_required(login_url="/lab3/accounts/login/")
 def list_urls(request, format=None):
-	if request.method == "GET":
+	if request.method == 'GET':
 		urls = URL.objects.all()
-		serializer = URLSerializer(urls, many = True)
+		serializer = URLSerializer(urls, many=True)
 		return Response(serializer.data)
-	elif request.method == "POST":
+	elif request.method == 'POST':
 		serializer = URLSerializer(data = request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -142,18 +142,17 @@ def list_urls(request, format=None):
 		return Response(status = status.HTTP_400_BAD_REQUEST)
 
 # GET a specific URL or DELETE a specific URL
-@api_view(["GET", "DELETE"])
-@ratelimit(key="ip", rate="10/m", block=True)
+@api_view(['GET', 'DELETE'])
 @login_required(login_url="/lab3/accounts/login/")
 def detail_url(request, pk, format=None):
 	try:
 		url = URL.objects.get(pk = pk)
 	except URL.DoesNotExist:
 		return Response(status = status.HTTP_404_NOT_FOUND)
-	if request.method == "GET":
-		serializer = URLSerializer(url, many = True)
+	if request.method == 'GET':
+		serializer = URLSerializer(url)
 		return Response(serializer.data)
-	elif request.method == "DELETE":
+	elif request.method == 'DELETE':
 		url.delete()
 		return Response(status = status.HTTP_204_NO_CONTENT)
 	else:

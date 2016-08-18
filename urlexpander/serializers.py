@@ -4,4 +4,4 @@ from urlexpander.models import URL
 class URLSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = URL
-		fields = "__all__"
+		fields = '__all__'
