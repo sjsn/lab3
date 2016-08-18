@@ -7,3 +7,4 @@ labvenv/
 *.pyc
 
 .aws/
+YOUR-FILE-WITH-SENSITIVE-DATA
